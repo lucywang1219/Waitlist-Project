@@ -1,0 +1,110 @@
+.getnumber-container {
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.getnumber-form {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.getnumber-container1 {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-self: center;
+  align-items: stretch;
+  flex-direction: column;
+}
+.getnumber-container2 {
+  flex: 0 0 auto;
+  width: auto;
+  height: 100px;
+  display: flex;
+  padding: 0px;
+  position: relative;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.getnumber-text {
+  padding: var(--dl-space-space-unit);
+  align-self: center;
+}
+.getnumber-textinput {
+  flex: initial;
+  align-self: center;
+}
+.getnumber-container3 {
+  flex: 0 0 auto;
+  width: auto;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.getnumber-text01 {
+  width: auto;
+  padding: var(--dl-space-space-unit);
+  align-self: center;
+}
+.getnumber-textinput1 {
+  align-self: center;
+}
+.getnumber-container4 {
+  flex: 0 0 auto;
+  width: auto;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.getnumber-text04 {
+  padding: var(--dl-space-space-unit);
+  align-self: center;
+}
+.getnumber-textinput2 {
+  align-self: center;
+}
+.getnumber-container5 {
+  flex: 0 0 auto;
+  width: auto;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.getnumber-text07 {
+  padding: var(--dl-space-space-unit);
+  align-self: center;
+}
+.getnumber-textinput3 {
+  align-self: center;
+}
+.getnumber-button {
+  color: var(--dl-color-gray-white);
+  font-size: 0.75rem;
+  align-self: center;
+  transition: 0.3s;
+  background-color: var(--dl-color-gray-black);
+}
+.getnumber-button:hover {
+  color: var(--dl-color-gray-black);
+  background-color: transparent;
+}
+@media(max-width: 479px) {
+  .getnumber-button {
+    margin-top: var(--dl-space-space-unit);
+    margin-left: 0px;
+  }
+}

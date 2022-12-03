@@ -1,0 +1,56 @@
+.calltable-container {
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.calltable-container1 {
+  flex: 0 0 auto;
+  width: auto;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.calltable-button {
+  color: var(--dl-color-gray-white);
+  margin: var(--dl-space-space-oneandhalfunits);
+  padding: var(--dl-space-space-unit);
+  align-self: stretch;
+  transition: 0.3s;
+  border-radius: 15px;
+  padding-bottom: 16px;
+  background-color: var(--dl-color-gray-black);
+}
+.calltable-button:hover {
+  transform: scale(1.02);
+}
+.calltable-button1 {
+  color: var(--dl-color-gray-white);
+  margin: var(--dl-space-space-oneandhalfunits);
+  padding: var(--dl-space-space-unit);
+  align-self: stretch;
+  transition: 0.3s;
+  border-radius: 15px;
+  padding-bottom: 16px;
+  background-color: var(--dl-color-gray-black);
+}
+.calltable-button1:hover {
+  transform: scale(1.02);
+}
+.calltable-button2 {
+  color: var(--dl-color-gray-white);
+  margin: var(--dl-space-space-oneandhalfunits);
+  padding: var(--dl-space-space-unit);
+  align-self: stretch;
+  transition: 0.3s;
+  border-radius: 15px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  background-color: var(--dl-color-gray-black);
+}
+.calltable-button2:hover {
+  transform: scale(1.02);
+}
