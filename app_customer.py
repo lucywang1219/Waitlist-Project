@@ -25,28 +25,31 @@ def get_number():
     'getnumber.html'
     ) 
 
-def get_waiting_info(): 
-    if request.method == "POST":
-        name = request.form['name']
-        contact = request.form['contact']
-        group_size = request.form['group_size']
-        cust= Customer(name, contact, group_size)
-        waitlist_recorder.insert_customer_info(cust)
-        num_groups_waiting, waiting_time = waitlist_recorder.count_numbers_waiting_and_time(cust)
-        table, table_size = waitlist_recorder.define_table_size(cust)
-        return render_template("waiting_info.html",num_groups = num_groups_waiting, time = waiting_time, size = table_size)
-
-
 @app.route('/return_user')
 def return_user(): 
     return render_template('returnuser.html')
 
-@app.route('/waiting_info', methods = ['GET', 'POST'])
+@app.route('/waiting_info/return_user', methods = ['POST'])
 def get_return_user(): 
     if request.method == 'POST': 
-        contact = request.form['contact'] #TODO: no form, what is the name in html? 
-        num_groups_waiting, waiting_time,  table_size = waitlist_recorder.get_return_user_waiting_num_and_time(contact)
-        return render_template("waiting_info.html",num_groups = num_groups_waiting, time = waiting_time, size = table_size ) 
+        cust_contact = request.form['contact']
+        num_groups_waiting, waiting_time,  table_size = waitlist_recorder.get_return_user_waiting_num_and_time(cust_contact)
+        return render_template("waitinginfo.html",num_groups = num_groups_waiting, time = waiting_time, size = table_size ) 
+
+@app.route('/waiting_info/new_user', methods = ['POST'])
+def get_waiting_info(): 
+    if request.method == "POST":
+        name = request.form['name']
+        group_size = int(request.form['group_size'])
+        contact = request.form['contact']
+        cust= Customer(name, contact, group_size)
+        waitlist_recorder.insert_customer_info(cust)
+        # cursor.execute("INSERT INTO customer_info VALUES (?, ?, ?);", (cust.name, cust.contact, cust.group))
+        # connection.commit()
+        num_groups_waiting, waiting_time = waitlist_recorder.count_numbers_waiting_and_time(cust)
+        table_size = waitlist_recorder.define_table_size(cust)[1]
+        return render_template("waitinginfo.html",num_groups = num_groups_waiting, time = waiting_time, size = table_size)
+
 
 @app.route('/call_table')
 def call_large(): 
@@ -59,5 +62,5 @@ def call_small():
     waitlist_recorder.call_small_table() 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=50000)
-    connection.commit()
+    app.run(debug=True, port = 12345)
+

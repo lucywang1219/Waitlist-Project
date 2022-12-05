@@ -24,7 +24,7 @@ account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
 client = Client(account_sid, auth_token)
 
-connection = sqlite3.connect("waitlist.db")
+connection = sqlite3.connect("waitlist.db",check_same_thread=False)
 cursor = connection.cursor()
 # cursor.execute("CREATE TABLE customer_info (name TEXT, contact TEXT, group_size INTEGER)")
 connection.commit()
@@ -48,13 +48,13 @@ def insert_customer_info(cust):
 def define_table_size(cust): 
     if 1 <= cust.group <= 3: 
         table = small_table
-        table_size = 'small'
+        table_size = 'Small'
     elif 4<= cust.group <= 6: 
         table = mid_table
-        table_size = 'medium'
+        table_size = 'Medium'
     elif cust.group >= 7: 
         table = large_table
-        table_size = 'large'
+        table_size = 'Large'
     return table, table_size  
 
 def count_numbers_waiting_and_time(cust): 
@@ -65,7 +65,7 @@ def count_numbers_waiting_and_time(cust):
     #     table = mid_table
     # elif cust.group >= 7: 
     #     table = large_table
-    table, table_size = define_table_size(cust)
+    table = define_table_size(cust)[0]
     cursor.execute("SELECT * FROM customer_info WHERE group_size IN {}".format(str(tuple(table))))
     num_groups_waiting = len(cursor.fetchall())
     waiting_time = num_groups_waiting * 10 
@@ -81,7 +81,7 @@ def call_large_table():
         .create(
             body=f'Dear {cust.name}, your table is ready.',
             from_='+13087734285',
-            to='+13399330492'
+            to='+1' + {cust.contact}
         )
 
     print(message.sid)
@@ -96,7 +96,7 @@ def call_mid_table():
         .create(
             body=f'Dear {cust.name}, your table is ready.',
             from_='+13087734285',
-            to='+13399330492'
+            to='+1'+ {cust.contact}
         )
 
     print(message.sid)
@@ -123,7 +123,7 @@ def get_return_user_waiting_num_and_time(contact):
     cursor.execute("SELECT * FROM customer_info WHERE contact = ?", [contact]) 
     cust_list = (cursor.fetchone())
     cust = Customer(cust_list[0], cust_list[1], cust_list[2])
-    table_size = define_table_size(cust) 
+    table_size = define_table_size(cust)[1]
     num_groups_waiting, waiting_time = count_numbers_waiting_and_time(cust)
     return num_groups_waiting, waiting_time, table_size
 

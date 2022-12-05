@@ -38,20 +38,19 @@
     />
     <!--This is the head section-->
     <!-- <style> ... </style> -->
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href= "{{ url_for('static',filename='style.css') }}"/>
   </head>
   <body>
     <div>
-      <link href="./waitinginfo.css" rel="stylesheet" />
+      <link href= "{{ url_for('static',filename='waitinginfo.css') }}" rel="stylesheet" />
 
       <div class="waitinginfo-container">
         <div class="waitinginfo-feature-card">
-          <h2 class="waitinginfo-text">your number is____</h2> # TODO: get rid of number 
-          <span class="waitinginfo-text1"> {{ size }}desk</span>
+          <span class="waitinginfo-text1"> {{ size }} desk</span>
           <span class="waitinginfo-text2">
-            <span>there are {{ num_gorups }} tables before you&nbsp;</span>
+            <span>There are {{ num_groups }} tables before you&nbsp;. </span>
             <br />
-            <span>estimated waiting time is {{ time }}</span>
+            <span>Estimated waiting time is {{ time }} minutes. </span>
             <br />
           </span>
         </div>

@@ -42,7 +42,7 @@
       <link  href= "{{ url_for('static',filename='getnumber.css') }}" rel="stylesheet" />
 
       <div class="getnumber-container">
-        <form class="getnumber-form">
+        <form class="getnumber-form" action="{{ url_for('get_waiting_info') }}" method="post";>
           <div class="getnumber-container1">
             <div class="getnumber-container2">
               <span class="getnumber-text">name</span>
@@ -58,7 +58,7 @@
                 <br />
               </span>
               <input
-                type="text"
+                type="number"
                 name="group_size" 
                 class="getnumber-textinput1 input"
               />
@@ -74,7 +74,7 @@
                 class="getnumber-textinput2 input"
               />
             </div>
-            <div class="getnumber-container5">
+            <!-- <div class="getnumber-container5">
               <span class="getnumber-text07">
                 <span>comment</span>
                 <br />
@@ -85,7 +85,7 @@
                 target="comment"
                 class="getnumber-textinput3 input"
               />
-            </div>
+            </div> -->
             <button class="getnumber-button button">submit</button>
           </div>
         </form>

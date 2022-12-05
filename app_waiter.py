@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from flask_sqlalchemy import SQLAlchemy
 import waitlist_recorder
 from waitlist_recorder import Customer
 app = Flask(__name__, template_folder = 'templates', static_folder= 'static')
@@ -7,8 +8,10 @@ app = Flask(__name__, template_folder = 'templates', static_folder= 'static')
 def call_table(): 
     return render_template('calltable.html')
 
+@app.route('/calltable', methods=['GET','POST'])
 def call_large(): 
-    waitlist_recorder.call_large_table()
+    if request.method == 'POST': 
+        return waitlist_recorder.call_large_table() 
 
 def call_mid(): 
     waitlist_recorder.call_mid_table()

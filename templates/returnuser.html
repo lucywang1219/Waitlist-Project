@@ -50,16 +50,17 @@
           <span class="returnuser-text1">
             we will text you when your seats are ready
           </span>
-          <div class="returnuser-container1">
-            <input
-              type="text"
-              placeholder="phone number here"
-              class="returnuser-textinput input"
-            />
-            <a href="{{ url_for ('get_return_user') }}">
+          <form class="returnuser-form" action="{{ url_for('get_return_user') }}" method="post";>
+            <div class="returnuser-container1">
+              <input
+                type="text"
+                placeholder="phone number here"
+                class="returnuser-textinput input"
+                name = 'contact'
+              />
               <button class="returnuser-button button">submit</button>
-            </a>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
