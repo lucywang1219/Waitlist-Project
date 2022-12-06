@@ -36,7 +36,7 @@ def get_return_user():
         num_groups_waiting, waiting_time,  table_size = waitlist_recorder.get_return_user_waiting_num_and_time(cust_contact)
         return render_template("waitinginfo.html",num_groups = num_groups_waiting, time = waiting_time, size = table_size ) 
 
-@app.route('/waiting_info/new_user', methods = ['POST'])
+@app.route('/waiting_info/new_user', methods = ['POST', 'GET'])
 def get_waiting_info(): 
     if request.method == "POST":
         name = request.form['name']

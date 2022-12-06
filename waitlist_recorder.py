@@ -12,16 +12,11 @@
 """
 
 import sqlite3
-from configparser import ConfigParser
 import os
 from twilio.rest import Client
 
-
-os.environ['TWILIO_ACCOUNT_SID'] = 'AC4be78e3eaf5d179379fe2a6d63a13600'
-os.environ['TWILIO_AUTH_TOKEN'] = '3644e7ada0c92bb6f2eda3b03516d6ec'
-
-account_sid = os.environ['TWILIO_ACCOUNT_SID']
-auth_token = os.environ['TWILIO_AUTH_TOKEN']
+account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+auth_token = os.getenv('TWILIO_AUTH_TOKEN')
 client = Client(account_sid, auth_token)
 
 connection = sqlite3.connect("waitlist.db",check_same_thread=False)
@@ -44,6 +39,7 @@ class Customer:
 def insert_customer_info(cust): 
     """insert customer information """
     cursor.execute("INSERT INTO customer_info VALUES (?, ?, ?);", (cust.name, cust.contact, cust.group))
+    connection.commit()
 
 def define_table_size(cust): 
     if 1 <= cust.group <= 3: 
@@ -72,52 +68,52 @@ def count_numbers_waiting_and_time(cust):
     return num_groups_waiting, waiting_time
   
 
+def send_message_twilio(cust):
+    contact = '+1' + cust.contact
+    message = client.messages \
+        .create(
+            body=f'Dear {cust.name}, your table is ready.',
+            from_='+13087734285',
+            to= {contact}
+        )
+    print(message.sid)
+    print(f'Dear {cust.name}, your table is ready.')
+
 def call_large_table(): 
     cursor.execute("SELECT * FROM customer_info WHERE group_size >= 7 ")
     customer = list(cursor.fetchone())
     cust = Customer(customer[0], customer[1], customer[2])
-
-    message = client.messages \
-        .create(
-            body=f'Dear {cust.name}, your table is ready.',
-            from_='+13087734285',
-            to='+1' + {cust.contact}
-        )
-
-    print(message.sid)
+    print(customer)
+    send_message_twilio(cust)
+    delete_customer(customer)
 
 def call_mid_table(): 
     cursor.execute("SELECT * FROM customer_info WHERE group_size >= 4 AND group_size <= 6 ")
-    called_cust = list(cursor.fetchone())
+    # called_cust = list(cursor.fetchone())
     customer = list(cursor.fetchone())
     cust = Customer(customer[0], customer[1], customer[2])
-
-    message = client.messages \
-        .create(
-            body=f'Dear {cust.name}, your table is ready.',
-            from_='+13087734285',
-            to='+1'+ {cust.contact}
-        )
-
-    print(message.sid)
+    print(customer)
+    send_message_twilio(cust)
+    delete_customer(customer)
 
 def call_small_table(): 
     cursor.execute("SELECT * FROM customer_info WHERE 1 <= group_size <= 3 ")
-    called_cust = list(cursor.fetchone())
+    # called_cust = list(cursor.fetchone())
     customer = list(cursor.fetchone())
     cust = Customer(customer[0], customer[1], customer[2])
+    print(customer)
+    send_message_twilio(cust)
+    delete_customer(customer)
 
-    message = client.messages \
-        .create(
-            body=f'Dear {cust.name}, your table is ready.',
-            from_='+13087734285',
-            to= '+1'+ {cust.contact}
-        )
-
-    print(message.sid)
-
-def delete_customer(called_cust): 
+def delete_customer(called_cust):
+    """
+    Parameters:
+        called_cust: a tuple
+    """ 
+    print(f'deleting {called_cust}')
     cursor.execute("DELETE FROM customer_info WHERE contact = ?", [called_cust[1]]) 
+    connection.commit() 
+    
 
 def get_return_user_waiting_num_and_time(contact): 
     cursor.execute("SELECT * FROM customer_info WHERE contact = ?", [contact]) 
@@ -127,19 +123,26 @@ def get_return_user_waiting_num_and_time(contact):
     num_groups_waiting, waiting_time = count_numbers_waiting_and_time(cust)
     return num_groups_waiting, waiting_time, table_size
 
+def get_all():
+    """Return all customers' info"""
+    print('Getting all customer from database')
+    cursor.execute("SELECT * FROM customer_info")
+    all_customers = cursor.fetchall() # list of tuples [(name, contact, size), ()]
+    return all_customers
+
 
 def main(): 
-    # customer_name = input("customer name: ")
-    # customer_contact = input("Your contact: ")
-    # customer_size = int(input("Your group size: ")) 
-    # cust = Customer(customer_name, customer_contact, customer_size)
-    # insert_customer_info(cust)
+    customer_name = input("customer name: ")
+    customer_contact = input("Your contact: ")
+    customer_size = int(input("Your group size: ")) 
+    cust = Customer(customer_name, customer_contact, customer_size)
+    insert_customer_info(cust)
     # print(count_numbers_waiting_and_time(cust))
     # print(get_return_user_waiting_num_and_time(cust))
     # cursor.execute("DELETE FROM customer_info WHERE name = '4'")
     
    
-    print(call_large_table())
+    # print(call_large_table())
     # print(call_mid_table())
     # print(call_small_table())
 
